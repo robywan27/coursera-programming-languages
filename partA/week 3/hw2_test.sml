@@ -6,6 +6,22 @@ val test_string_in_list = all_except_option ("find me", ["some text", "some othe
 val test_string_not_in_list = all_except_option ("find me", ["some text", "some other text", "find", "not here", "hola"]) = NONE
 
 
+(* Exercise b *)
+val test_substitutions1 = get_substitutions1 ([["Fred","Fredrick"],["Elizabeth","Betty"],["Freddie","Fred","F"]], "Fred") = ["Fredrick","Freddie","F"]
+val test_substitutions1_with_repetition = get_substitutions1 ([["Fred","Fredrick"],["Jeff","Jeffrey"],["Geoff","Jeff","Jeffrey"]], "Jeff") =  ["Jeffrey","Geoff","Jeffrey"]
+
+
+(* Exercise c *)
+val test_substitutions2 = get_substitutions2 ([["Fred","Fredrick"],["Elizabeth","Betty"],["Freddie","Fred","F"]], "Fred") = ["Fredrick","Freddie","F"]
+val test_substitutions2_with_repetition = get_substitutions2 ([["Fred","Fredrick"],["Jeff","Jeffrey"],["Geoff","Jeff","Jeffrey"]], "Jeff") =  ["Jeffrey","Geoff","Jeffrey"]
+
+
+(* Exercise d *)
+val test_similar_names =  similar_names ([["Fred","Fredrick"],["Elizabeth","Betty"],["Freddie","Fred","F"]], {first="Fred", middle="W", last="Smith"}) = [{first="Fred",last="Smith",middle="W"}, {first="Fredrick",last="Smith",middle="W"}, {first="Freddie",last="Smith",middle="W"}, {first="F",last="Smith",middle="W"}]
+
+
+
+
 (* Section 2 *)
 (* Exercise a *)
 val test_black_color = card_color (Club, Num(3)) = Black

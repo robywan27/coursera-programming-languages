@@ -27,12 +27,12 @@ fun all_except_option (search_string, corpus) =
     end	
 
 
-(* get_substitutions1 : string list list * string -> string list *)	
 (* Exercise b *)
+(* get_substitutions1 : string list list * string -> string list *)
 fun get_substitutions1 (substitutions, s) =
     case substitutions of
 	[]                             => []
-      | (next_list :: remaining_lists) => let val maybe_list_except_s = all_except_option (next_list, s)
+      | (next_list :: remaining_lists) => let val maybe_list_except_s = all_except_option (s, next_list)
 					  in
 					      case maybe_list_except_s of
 						  NONE      => [] @ get_substitutions1 (remaining_lists, s)
@@ -41,11 +41,34 @@ fun get_substitutions1 (substitutions, s) =
 
 
 (* Exercise c *)
+(* get_substitutions2 : string list list * string -> string list *)
+fun get_substitutions2 (substitutions, s) =
+    let fun get_substitutions_helper (substitutions, acc) =
+	    case substitutions of
+		[]                             => acc
+	      | (next_list :: remaining_lists) => let val maybe_list_except_s = all_except_option (s, next_list)
+						  in
+						      case maybe_list_except_s of
+							  NONE      => get_substitutions_helper (remaining_lists, acc)
+							| SOME list => get_substitutions_helper (remaining_lists, acc @ list)
+						  end
+    in
+	get_substitutions_helper (substitutions, [])
+    end
 
-
+					      
 (* Exercise d *)
-
-
+(* similar_name : string list list * {first: string, last: string, middle: string} ->  {first: string, last: middle, middle: string} list *)
+fun similar_names (substitutions, {first = f, middle = m, last = l}) =
+    let fun similar_names_helper (names, acc) =
+	    case names of
+		[] => acc
+	      | (n :: ns) => similar_names_helper (ns, acc @ [{first = n, middle = m, last = l}])	    
+	val substituted_names = get_substitutions2 (substitutions, f)
+    in
+	similar_names_helper (substituted_names, [{first = f, middle = m, last = l}])
+    end
+	
 
 					      
 
